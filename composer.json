@@ -3,7 +3,7 @@
     "description": "API PHP para Revista Cavite",
     "type": "project",
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.5.12",
         "ext-pdo": "*"
     },
     "autoload": {
