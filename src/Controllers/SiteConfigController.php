@@ -54,6 +54,12 @@ final class SiteConfigController
 
         $config = $row ? json_decode($row['config'], true) : self::DEFAULT_CONFIG;
 
+        foreach (self::DEFAULT_CONFIG as $key => $defaultValue) {
+            if (!array_key_exists($key, $config)) {
+                $config[$key] = $defaultValue;
+            }
+        }
+
         Response::json(['config' => self::forObjectMaps($config)]);
     }
 
