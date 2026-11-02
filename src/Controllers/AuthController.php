@@ -14,15 +14,15 @@ final class AuthController
         $pdo = Database::connection();
         $payload = Request::jsonBody();
 
-        $email = trim((string) ($payload['email'] ?? ''));
+        $username = trim((string) ($payload['username'] ?? ''));
         $password = (string) ($payload['password'] ?? '');
 
-        if ($email === '' || $password === '') {
-            Response::error('Introduce correo y contraseña.', 422);
+        if ($username === '' || $password === '') {
+            Response::error('Introduce usuario y contraseña.', 422);
         }
 
-        $statement = $pdo->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
-        $statement->execute(['email' => $email]);
+        $statement = $pdo->prepare('SELECT * FROM users WHERE username = :username LIMIT 1');
+        $statement->execute(['username' => $username]);
         $user = $statement->fetch();
 
         if (!$user || !password_verify($password, $user['password_hash'])) {
@@ -63,6 +63,7 @@ final class AuthController
         return [
             'id' => (string) $user['id'],
             'name' => $user['name'],
+            'username' => $user['username'],
             'email' => $user['email'],
             'role' => $user['role'],
         ];

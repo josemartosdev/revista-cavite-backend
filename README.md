@@ -31,7 +31,10 @@ API en PHP plano (sin framework) con PDO, que implementa el contrato descrito en
 
    (o importa `sql/schema.sql` desde phpMyAdmin)
 
-4. Crea el usuario inicial de redacción/administración:
+   Si ya tenías una base de datos creada con la versión anterior, ejecuta una sola vez
+   `sql/migrations/20261102_add_username_auth.sql` para añadir el campo de usuario.
+
+4. Crea el usuario inicial de redacción/administración con usuario y contraseña:
 
    ```bash
    php bin/create-user.php
