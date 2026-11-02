@@ -23,7 +23,10 @@ Env::load(__DIR__ . '/../.env');
 
 ini_set('display_errors', '0');
 
-$allowedOrigin = Env::get('CORS_ALLOWED_ORIGIN', 'http://localhost:5173');
+// CORS_ALLOWED_ORIGIN admite varios orígenes separados por comas.
+$allowedOrigins = array_values(array_filter(array_map('trim', explode(',', Env::get('CORS_ALLOWED_ORIGIN', 'http://localhost:5173')))));
+$requestOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowedOrigin = in_array($requestOrigin, $allowedOrigins, true) ? $requestOrigin : ($allowedOrigins[0] ?? '');
 header("Access-Control-Allow-Origin: {$allowedOrigin}");
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
