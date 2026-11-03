@@ -36,6 +36,7 @@ final class SiteConfigController
         ],
         'content' => [],
         'images' => [],
+        'links' => [],
         'modules' => [],
         'categories' => self::DEFAULT_CATEGORIES,
         'navItems' => [],
@@ -89,7 +90,7 @@ final class SiteConfigController
 
     private static function forObjectMaps(array $config): array
     {
-        foreach (['content', 'images', 'modules'] as $key) {
+        foreach (['content', 'images', 'links', 'modules'] as $key) {
             if (empty($config[$key])) {
                 $config[$key] = new \stdClass();
             }
@@ -138,6 +139,7 @@ final class SiteConfigController
             'theme' => $cleanTheme,
             'content' => self::stringMap($config['content'] ?? [], 'content'),
             'images' => self::stringMap($config['images'] ?? [], 'images', true),
+            'links' => self::stringMap($config['links'] ?? [], 'links'),
             'modules' => self::validateModules($config['modules'] ?? []),
             'categories' => self::validateCategories($config['categories'] ?? []),
             'navItems' => $navItems,
