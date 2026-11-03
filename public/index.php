@@ -23,10 +23,27 @@ Env::load(__DIR__ . '/../.env');
 
 ini_set('display_errors', '0');
 
-// CORS_ALLOWED_ORIGIN admite varios orígenes separados por comas.
+// CORS_ALLOWED_ORIGIN admite varios orígenes separados por comas. Cada entrada
+// puede ser un origen exacto (https://ejemplo.com) o un patrón con un único
+// comodín "*" (https://*.vercel.app) para permitir despliegues de Vercel
+// preview, cuya URL cambia en cada deploy.
 $allowedOrigins = array_values(array_filter(array_map('trim', explode(',', Env::get('CORS_ALLOWED_ORIGIN', 'http://localhost:5173')))));
 $requestOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$allowedOrigin = in_array($requestOrigin, $allowedOrigins, true) ? $requestOrigin : ($allowedOrigins[0] ?? '');
+$isOriginAllowed = false;
+foreach ($allowedOrigins as $pattern) {
+    if ($pattern === $requestOrigin) {
+        $isOriginAllowed = true;
+        break;
+    }
+    if (str_contains($pattern, '*')) {
+        $regex = '#^' . str_replace('\*', '.*', preg_quote($pattern, '#')) . '$#i';
+        if (preg_match($regex, $requestOrigin) === 1) {
+            $isOriginAllowed = true;
+            break;
+        }
+    }
+}
+$allowedOrigin = $isOriginAllowed ? $requestOrigin : ($allowedOrigins[0] ?? '');
 header("Access-Control-Allow-Origin: {$allowedOrigin}");
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');

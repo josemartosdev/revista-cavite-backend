@@ -54,7 +54,7 @@ API en PHP plano (sin framework) con PDO, que implementa el contrato descrito en
 
 ## Notas
 
-- CORS solo permite el origen configurado en `CORS_ALLOWED_ORIGIN` (por defecto `http://localhost:5173`, el de Vite).
+- CORS solo permite los orígenes configurados en `CORS_ALLOWED_ORIGIN` (lista separada por comas; por defecto `http://localhost:5173`, el de Vite). Cada entrada admite un comodín `*`, p. ej. `https://*.vercel.app` para cubrir los despliegues preview de Vercel.
 - Los tokens de sesión son aleatorios (32 bytes), se guardan solo como SHA-256 en `auth_tokens` y caducan según `TOKEN_TTL_HOURS`.
 - No hay endpoint público de registro: los usuarios se crean con `bin/create-user.php`.
 - El esquema y las reglas de validación siguen exactamente `BACKEND_PHP.md` del frontend.
